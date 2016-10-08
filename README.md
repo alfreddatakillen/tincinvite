@@ -29,4 +29,3 @@ in the `Location:` response header.
 
 		curl -v -v -X "$method" -H "Accept: text/plain" -H "$authheader" -H "Date: $time" -d "$body" "http://127.0.0.1:8080$path" 2>&1 | grep '^< Location:' | sed -r 's/^[^:]+: //'
 
-
