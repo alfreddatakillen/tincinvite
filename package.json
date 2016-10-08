@@ -1,0 +1,17 @@
+{
+  "name": "tincinvite",
+  "version": "0.0.1",
+  "description": "Tinc invitations server",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "author": "Alfred Godoy <alfred@nurd.nu>",
+  "license": "GPL-3.0",
+  "dependencies": {
+    "restify": "4.1.1",
+    "sessionist-middleware": "0.0.2",
+    "smplcnf": "^1.0.0"
+  }
+}
