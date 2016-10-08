@@ -2,19 +2,26 @@ const conf = require('smplcnf');
 const exec = require('child_process').exec;
 const restify = require('restify');
 const sessionist_middleware = require('sessionist-middleware');
-
-conf.load('config.json');
 const server = restify.createServer();
 
-const keyfn = (keyid, cb) => {
-	if (keyid === 'hello') return cb(null, 'topsecret');
-	return cb(new Error('Invalid credentials.'));
-};
-server.use(sessionist_middleware.parseAuthorizationMiddleware(keyfn));
-server.use(sessionist_middleware.settleAuthorizationMiddleware());
+conf.load('config.json');
 
-conf('tinc.config_dir')
+let keyfn;
+
+conf('authorization')
+.then(authorization => {
+
+	keyfn = (keyid, cb) => {
+		if (typeof authorization[keyid]) return cb(null, authorization[keyid]);
+		return cb(new Error('Invalid credentials.'));
+	};
+
+})
+.then(() => conf('tinc.config_dir'))
 .then(tincconfig => {
+
+	server.use(sessionist_middleware.parseAuthorizationMiddleware(keyfn));
+	server.use(sessionist_middleware.settleAuthorizationMiddleware());
 
 	server.post('/invitation/:host', (req, res, next) => {
 
@@ -47,3 +54,6 @@ conf('tinc.config_dir')
 		console.log('%s listening at %s', server.name, server.url);
 	});
 })
+.catch(err => {
+	console.log(err);
+});
