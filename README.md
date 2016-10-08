@@ -11,7 +11,13 @@ Make a HTTP POST request to `/invitation/<some name>`. You need to pass
 proper Sessionist HTTP `Autorization:` headers. The invite will be returned
 in the `Location:` response header.
 
+Multiple machines can have the same name, since tincinvite will append a
+millisecond timestamp when creating the invite.
+
 ## Example bash script
+
+This script will create a proper Sessionist `Authorization:` header, and get
+an invitation.
 
 		#!/bin/bash
 
